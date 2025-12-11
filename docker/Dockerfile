@@ -15,11 +15,11 @@ WORKDIR /opt/migration
 COPY scripts/ /opt/migration/scripts/
 RUN chmod +x /opt/migration/scripts/*.sh
 
-# Copy Odoo 18 source from host
-COPY ../odoo/ /opt/odoo
+# Copy Odoo 18 source from repo
+COPY odoo/ /opt/odoo
 
-# Copy OpenUpgrade 18 scripts from host
-COPY ../openupgrade/ /opt/migration/openupgrade
+# Copy OpenUpgrade 18 scripts from repo
+COPY openupgrade/ /opt/migration/openupgrade
 
 # Install Python dependencies needed for Odoo migration
 RUN pip3 install wheel setuptools psycopg2-binary Babel lxml decorator
