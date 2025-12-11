@@ -5,6 +5,12 @@ RUN apt-get update && apt-get install -y \
     libpq-dev postgresql-client
 
 WORKDIR /opt/migration
+
+# Copy scripts first and make them executable
+COPY scripts/ /opt/migration/scripts/
+RUN chmod +x /opt/migration/scripts/*.sh
+
+# Copy the rest of the repo (optional: exclude scripts if already copied)
 COPY . /opt/migration
 
 RUN pip3 install wheel setuptools psycopg2-binary Babel lxml decorator
