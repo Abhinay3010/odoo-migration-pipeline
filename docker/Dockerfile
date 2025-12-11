@@ -1,12 +1,15 @@
 # Base image
 FROM ubuntu:22.04
 
-# Install system dependencies
+# Install system dependencies and PostgreSQL 16 client
 RUN apt-get update && apt-get install -y \
     python3 python3-pip python3-dev build-essential git wget \
-    libpq-dev postgresql-client \
+    libpq-dev postgresql-client-16 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Ensure PostgreSQL binaries are in PATH
+ENV PATH="/usr/lib/postgresql/16/bin/:$PATH"
 
 # Set working directory for migration scripts
 WORKDIR /opt/migration
@@ -22,7 +25,7 @@ COPY odoo/ /opt/odoo
 COPY openupgrade/ /opt/migration/openupgrade
 
 # Install Python dependencies needed for Odoo migration
-RUN pip3 install wheel setuptools psycopg2-binary Babel lxml decorator
+RUN pip3 install --no-cache-dir wheel setuptools psycopg2-binary Babel lxml decorator
 
 # Set default entrypoint to run the migration wrapper
 ENTRYPOINT ["/opt/migration/scripts/run_migration.sh"]
