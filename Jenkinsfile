@@ -3,10 +3,10 @@ pipeline {
 
     environment {
         // Default DB credentials
-        DB_HOST = '172.31.44.171'
+        DB_HOST = '172.31.44.171'          // your EC2 host IP
         DB_PORT = '5432'
-        DB_USER = 'odoo_user_new'                // your DB user
-        DB_PASS = credentials('db-cred')         // Jenkins secret credential ID
+        DB_USER = 'odoo_user_new'          // your DB user
+        DB_PASS = credentials('db-cred')   // Jenkins secret credential ID
         UPGRADE_PATH = '/opt/migration/openupgrade/scripts'
         DOCKER_IMAGE = 'odoo-migration:latest'
     }
@@ -25,16 +25,14 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh '''
-                docker build -t $DOCKER_IMAGE -f docker/Dockerfile .
-                '''
+                sh 'docker build -t $DOCKER_IMAGE -f docker/Dockerfile .'
             }
         }
 
         stage('Run Migration') {
             steps {
                 sh '''
-                docker run --rm \
+                docker run --rm --network host \
                     -e DB_NAME=${DB_NAME} \
                     -e DB_HOST=${DB_HOST} \
                     -e DB_PORT=${DB_PORT} \
