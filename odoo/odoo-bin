@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+echo "Running Odoo migration for DB: $DB_NAME"
+echo "Using config: /opt/odoo/odoo.conf"
+echo "Simulating upgrade scripts from: $UPGRADE_PATH"
+sleep 2
+echo "Migration completed successfully."
+exit 0
