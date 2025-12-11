@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Default DB credentials
-        DB_HOST = '127.0.0.1'
+        DB_HOST = '172.31.44.171'
         DB_PORT = '5432'
         DB_USER = 'odoo_user_new'                // your DB user
         DB_PASS = credentials('db-cred')         // Jenkins secret credential ID
