@@ -1,12 +1,12 @@
 pipeline {
     agent any
+
     environment {
-        // You can set default DB credentials here, or pass them as Build With Parameters
-        DB_NAME = ''
+        // Default DB credentials
         DB_HOST = '127.0.0.1'
         DB_PORT = '5432'
-        DB_USER = 'odoo_user'
-        DB_PASS = credentials('DB_PASS') // Jenkins secret credential
+        DB_USER = 'odoo_user_new'                // your DB user
+        DB_PASS = credentials('db-cred')         // Jenkins secret credential ID
         UPGRADE_PATH = '/opt/migration/openupgrade/scripts'
         DOCKER_IMAGE = 'odoo-migration:latest'
     }
@@ -41,6 +41,8 @@ pipeline {
                     -e DB_USER=${DB_USER} \
                     -e DB_PASS=${DB_PASS} \
                     -e UPGRADE_PATH=${UPGRADE_PATH} \
+                    -v $WORKSPACE:/workspace \
+                    -w /workspace \
                     $DOCKER_IMAGE
                 '''
             }
